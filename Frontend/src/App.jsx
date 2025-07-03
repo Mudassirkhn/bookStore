@@ -48,7 +48,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/my-orders" element={<MyOrders />} />
 
-          // ✅ Book Detail Page
+          // ✅ Book Detail
           <Route path="/book/:id" element={<BookDetail />} />
           <Route
             path="/course"
