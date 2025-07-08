@@ -10,24 +10,27 @@ import userRouter from "./Router/userRouter.js";
 import adminRoute from "./Router/AdminRoutes/adminRoutes.js";
 import cartRoutes from "./Router/cartRoutes.js";
 import addressRoutes from "./Router/addressRoutes.js";
-import orderRoutes from "./Router/orderRoutes.js"; // ✅ Ensure orderRoutes.js has `export default router`
+import orderRoutes from "./Router/orderRoutes.js";
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
-const URI = process.env.DB_URL || "mongodb://localhost:27017/bookstore"; // Fallback URI
+const URI = process.env.DB_URL || "mongodb://localhost:27017/bookstore";
 
-// ✅ CORS Configuration (Updated)
+// ✅ Improved CORS Configuration
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:3000", // include if using Vite/CRA
   "https://bookstore-wj9e.onrender.com"
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
+    // Allow requests with no origin (e.g., Postman, curl)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.warn("❌ CORS blocked request from:", origin);
       callback(new Error("Not allowed by CORS"));
     }
   },
@@ -48,14 +51,14 @@ mongoose.connect(URI, {
 .catch((err) => console.error("❌ MongoDB Error:", err.message));
 
 // ✅ API Routes
-app.use("/book", bookRouter);               // Books (Course page)
-app.use("/user", userRouter);               // Auth (Signup/Login)
-app.use("/api/admin", adminRoute);          // Admin Panel
-app.use("/api/cart", cartRoutes);           // Cart
-app.use("/api/address", addressRoutes);     // Address
-app.use("/api/orders", orderRoutes);        // ✅ Orders
+app.use("/book", bookRouter);
+app.use("/user", userRouter);
+app.use("/api/admin", adminRoute);
+app.use("/api/cart", cartRoutes);
+app.use("/api/address", addressRoutes);
+app.use("/api/orders", orderRoutes);
 
-// ✅ Root
+// ✅ Root Endpoint
 app.get("/", (req, res) => {
   res.send("📚 Bookstore API is running...");
 });

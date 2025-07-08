@@ -3,10 +3,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useAuth } from "./website/context/AuthProvider";
 
-// Layouts
+// ✅ Layouts
 import WebsiteLayout from "./website/Layout/WebsiteLayout";
 
-// Public website pages
+// ✅ Public website pages
 import Home from "./website/Pages/Home";
 import About from "./website/components/About";
 import Contact from "./website/components/Contact";
@@ -14,23 +14,24 @@ import SignUp from "./website/components/Signup";
 import Courses from "./website/components/Course";
 import Cart from "./website/components/Cart";
 import Order from "./website/components/Order";
-import ThankYou from "./website/components/ThankYou"; // ✅ NEW IMPORT
+import ThankYou from "./website/components/ThankYou";
 
-// MY Account pages
+// ✅ My Account pages
 import Profile from "./website/User Account/Profile";
 import MyOrders from "./website/User Account/MyOrders";
+import ManageAddress from "./website/User Account/ManageAddress";
 
-// Book detail page
-import BookDetail from "./website/components/BookDetail"; // ✅ Import BookDetail
+// ✅ Book detail page
+import BookDetail from "./website/components/BookDetail";
 
-// Admin layout and pages
+// ✅ Admin layout and pages
 import AdminLayout from "./admin/Pages/AdminLayout";
 import AdminDashboard from "./admin/Pages/AdminDashboard";
 import Books from "./admin/Pages/ManageBooks";
 import Users from "./admin/Pages/ManageUsers";
 import OrderList from "./admin/Pages/OrderList";
 import LoginPage from "./admin/Pages/LoginPage";
-import ChangePassword from "./admin/Pages/ChangePassword"; // ✅ Import ChangePassword
+import ChangePassword from "./admin/Pages/ChangePassword";
 
 function App() {
   const [authUser] = useAuth();
@@ -39,17 +40,26 @@ function App() {
     <div className="dark:bg-slate-900 dark:text-white min-h-screen">
       <Routes>
 
-        {/* ✅ Public Website Routes with Navbar */}
+        {/* ✅ Website with Navbar */}
         <Route element={<WebsiteLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/my-orders" element={<MyOrders />} />
 
-          // ✅ Book Detail Page.
-          <Route path="/book/:id" element={<BookDetail />} />
+          {/* ✅ Auth Protected Routes */}
+          <Route
+            path="/profile"
+            element={authUser ? <Profile /> : <Navigate to="/signup" replace />}
+          />
+          <Route
+            path="/my-orders"
+            element={authUser ? <MyOrders /> : <Navigate to="/signup" replace />}
+          />
+          <Route
+            path="/address"
+            element={authUser ? <ManageAddress /> : <Navigate to="/signup" replace />}
+          />
           <Route
             path="/course"
             element={authUser ? <Courses /> : <Navigate to="/signup" replace />}
@@ -62,17 +72,14 @@ function App() {
             path="/order"
             element={authUser ? <Order /> : <Navigate to="/signup" replace />}
           />
-          <Route
-            path="/thank-you"
-            element={<ThankYou />} // ✅ New Route
-            
-          />
+          <Route path="/thank-you" element={<ThankYou />} />
+          <Route path="/book/:id" element={<BookDetail />} />
         </Route>
 
-        {/* ✅ Admin Login Page (Standalone) */}
+        {/* ✅ Admin Login */}
         <Route path="/admin/login" element={<LoginPage />} />
 
-        {/* ✅ Admin Panel with Sidebar */}
+        {/* ✅ Admin Panel (protected layout) */}
         <Route
           path="/admin"
           element={authUser ? <AdminLayout /> : <Navigate to="/admin/login" replace />}
@@ -85,7 +92,7 @@ function App() {
           <Route path="change-password" element={<ChangePassword />} />
         </Route>
 
-        {/* ❌ Catch-all */}
+        {/* ❌ Catch All */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 

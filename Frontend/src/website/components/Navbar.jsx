@@ -27,18 +27,10 @@ function Navbar() {
 
   const navItems = (
     <>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/course">Course</Link>
-      </li>
-      <li>
-        <Link to="/contact">Contact</Link>
-      </li>
-      <li>
-        <Link to="/about">About</Link>
-      </li>
+      <li><Link to="/">Home</Link></li>
+      <li><Link to="/course">Course</Link></li>
+      <li><Link to="/contact">Contact</Link></li>
+      <li><Link to="/about">About</Link></li>
       <li>
         <Link to="/cart" className="relative">
           🛒 Cart
@@ -54,12 +46,14 @@ function Navbar() {
 
   return (
     <div
-      className={`<div
-  className="max-w-screen-2xl container mx-auto px-4 md:px-20 fixed top-0 left-0 right-0 z-50 bg-base-200 dark:bg-slate-700 dark:text-white shadow-md border-b border-gray-200 dark:border-slate-100"
->
- ${sticky ? "shadow-md bg-base-200 dark:bg-slate-700 duration-300" : ""}`}
+      className={`max-w-screen-2xl container mx-auto px-4 md:px-20 fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
+        sticky
+          ? "shadow-md bg-base-200 dark:bg-slate-700"
+          : "bg-base-100 dark:bg-slate-800"
+      }`}
     >
-      <div className="navbar">
+      <div className="navbar py-2">
+        {/* Left - Logo & Hamburger */}
         <div className="navbar-start">
           <div className="dropdown lg:hidden">
             <div tabIndex={0} role="button" className="btn btn-ghost">
@@ -74,24 +68,24 @@ function Navbar() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
+                  d="M4 6h16M4 12h16M4 18h16"
                 />
               </svg>
             </div>
-            <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 dark:bg-slate-700 rounded-box w-52">
               {navItems}
             </ul>
           </div>
-          <Link to="/" className="text-2xl font-bold">
-            bookStore
-          </Link>
+          <Link to="/" className="text-2xl font-bold ml-2">bookStore</Link>
         </div>
 
+        {/* Center - Desktop Menu */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navItems}</ul>
         </div>
 
-        <div className="navbar-end space-x-3">
+        {/* Right - Search, Theme, Account */}
+        <div className="navbar-end space-x-3 items-center">
           {/* Search */}
           <div className="hidden md:block">
             <label className="px-3 py-2 border rounded-md flex items-center gap-2">
@@ -146,7 +140,7 @@ function Navbar() {
             )}
           </label>
 
-          {/* Auth Menu */}
+          {/* Auth Area */}
           {authUser ? (
             <div className="dropdown dropdown-end">
               <div
@@ -158,21 +152,12 @@ function Navbar() {
               </div>
               <ul
                 tabIndex={0}
-                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 dark:bg-slate-800 dark:text-white"
+                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 dark:bg-slate-800 dark:text-white rounded-box w-52"
               >
-                <li>
-                  <Link to="/profile">🧑 My Profile</Link>
-                </li>
-                <li>
-                  <Link to="/my-orders">📦 My Orders</Link>
-                </li>
-
-                <li>
-                  <Link to="/address">📍 Manage Address</Link>
-                </li>
-                <li>
-                  <Logout />
-                </li>
+                <li><Link to="/profile">🧑 My Profile</Link></li>
+                <li><Link to="/my-orders">📦 My Orders</Link></li>
+                <li><Link to="/address">📍 Manage Address</Link></li>
+                <li><Logout /></li>
               </ul>
             </div>
           ) : (

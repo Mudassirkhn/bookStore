@@ -45,20 +45,24 @@ const Order = () => {
         return `${base} bg-blue-100 text-blue-700`;
       case "Cancelled":
         return `${base} bg-gray-100 text-gray-500`;
+      case "Approved":
+        return `${base} bg-purple-100 text-purple-700`;
       default:
         return `${base} bg-gray-200 text-gray-700`;
     }
   };
 
-  // ✅ Cancel handler
+  const formatAddress = (addr) => {
+    if (!addr) return "N/A";
+    return `${addr.name}, ${addr.street}, ${addr.city}, ${addr.state} - ${addr.zip}`;
+  };
+
   const handleCancel = async (orderId) => {
     try {
       const confirm = window.confirm("Are you sure you want to cancel this order?");
       if (!confirm) return;
 
-      const res = await axios.put(`http://localhost:4001/api/orders/cancel/${orderId}`);
-
-      // Update UI immediately
+      await axios.put(`http://localhost:4001/api/orders/cancel/${orderId}`);
       setOrders((prev) =>
         prev.map((o) => (o._id === orderId ? { ...o, status: "Cancelled" } : o))
       );
@@ -71,7 +75,7 @@ const Order = () => {
   };
 
   return (
-    <div className="p-4 md:p-8 min-h-screen bg-gray-100 dark:bg-slate-900 dark:text-white">
+    <div className="p-4 md:p-6 lg:p-8 min-h-screen bg-gray-100 dark:bg-slate-900 dark:text-white">
       <h2 className="text-2xl font-bold mb-6 text-center">📦 My Orders</h2>
 
       {orders.length === 0 ? (
@@ -86,17 +90,17 @@ const Order = () => {
               className="border p-4 mb-6 rounded-md shadow bg-white dark:bg-slate-800"
             >
               {/* Header Section */}
-              <div className="flex flex-col sm:flex-row justify-between sm:items-center">
-                <div>
-                  <p className="text-sm">
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 sm:gap-0">
+                <div className="text-sm">
+                  <p>
                     <strong>Order Date:</strong>{" "}
                     {new Date(order.createdAt).toLocaleString()}
                   </p>
-                  <p className="text-sm">
+                  <p>
                     <strong>Payment:</strong> {order.paymentMethod}
                   </p>
                 </div>
-                <div className="mt-2 sm:mt-0">
+                <div>
                   <span className={statusBadge(order.status)}>{order.status}</span>
                 </div>
               </div>
@@ -106,24 +110,26 @@ const Order = () => {
                 <img
                   src={resolveImageSrc(order.items[0]?.image)}
                   alt={order.items[0]?.title}
-                  className="w-24 h-28 object-cover rounded border bg-white"
+                  className="w-24 h-28 sm:w-20 sm:h-24 object-cover rounded border bg-white"
                 />
                 <div>
-                  <h3 className="font-semibold">{order.items[0]?.title}</h3>
+                  <h3 className="font-semibold text-base sm:text-lg">
+                    {order.items[0]?.title}
+                  </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
                     Quantity: {order.items[0]?.quantity || 1}
                   </p>
-                  <p className="text-green-700 font-bold mt-1">
+                  <p className="text-green-700 font-bold mt-1 text-sm sm:text-base">
                     ₹{order.items[0]?.price}
                   </p>
                 </div>
               </div>
 
               {/* Accordion Toggle */}
-              <div className="mt-4 text-right">
+              <div className="mt-4 text-center sm:text-right">
                 <button
                   onClick={() => toggleAccordion(order._id)}
-                  className="text-blue-600 underline"
+                  className="text-blue-600 underline text-sm"
                 >
                   {expandedOrder === order._id ? "Hide Details" : "View Full Details"}
                 </button>
@@ -133,17 +139,18 @@ const Order = () => {
               {expandedOrder === order._id && (
                 <div className="mt-4 border-t pt-4 text-sm space-y-2">
                   <p>
-                    <strong>Address:</strong>{" "}
-                    {order.address?.name}, {order.address?.street},{" "}
-                    {order.address?.city}, {order.address?.state} - {order.address?.zip}
+                    <strong>Shipping Address:</strong> {formatAddress(order.shippingAddress)}
+                  </p>
+                  <p>
+                    <strong>Billing Address:</strong> {formatAddress(order.billingAddress)}
                   </p>
                   <p>
                     <strong>Total Amount:</strong> ₹{order.total}
                   </p>
 
                   {/* Buttons */}
-                  <div className="flex gap-4 mt-3 flex-wrap">
-                    <button className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">
+                  <div className="flex flex-col sm:flex-row gap-3 mt-3">
+                    <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full sm:w-auto">
                       Track Order
                     </button>
                     <button
@@ -151,7 +158,7 @@ const Order = () => {
                       disabled={
                         order.status === "Cancelled" || order.status === "Delivered"
                       }
-                      className={`px-4 py-1 rounded text-white ${
+                      className={`px-4 py-2 rounded text-white w-full sm:w-auto ${
                         order.status === "Cancelled" || order.status === "Delivered"
                           ? "bg-gray-400 cursor-not-allowed"
                           : "bg-red-500 hover:bg-red-600"
