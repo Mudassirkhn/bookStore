@@ -189,12 +189,12 @@ const Order = () => {
               <span>₹{subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
-              <span>GST (2%)</span>
-              <span>₹{gst.toFixed(2)}</span>
+              <span>GST (18%)</span>
+              <span>₹{gst.toFixed(18)}</span>
             </div>
             <div className="flex justify-between font-bold">
               <span>Total</span>
-              <span>₹{total.toFixed(2)}</span>
+              <span>₹{total.toFixed(18)}</span>
             </div>
           </div>
 
