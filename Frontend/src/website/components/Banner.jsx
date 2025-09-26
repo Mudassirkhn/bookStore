@@ -11,7 +11,7 @@ function Banner() {
         const activeBooks = res.data.filter(
           (book) => book.status === "Active" && book.type === "Free"
         );
-        setFeaturedBooks(activeBooks.slice(0, 8)); // Show first 8 books
+        setFeaturedBooks(activeBooks.slice(0, 8)); // first 8
       } catch (error) {
         console.error("Error fetching featured books:", error);
       }
@@ -20,70 +20,73 @@ function Banner() {
   }, []);
 
   return (
-    <div className="max-w-screen-2xl container mx-auto md:px-20 px-4 my-10">
-      {/* Banner Section */}
-      <div className="flex flex-col md:flex-row">
-        <div className="w-full order-2 md:order-1 md:w-1/2 mt-8 md:mt-14">
-          <div className="space-y-8">
-            <h1 className="text-2xl md:text-4xl font-bold">
-              Welcome to bookStore{" "}
-              <span className="text-pink-500">
-                Your Gateway to Endless Knowledge.
-              </span>
-            </h1>
-            <p className="text-sm md:text-xl">
-              Discover, Learn, and Grow with Every Page Turned. Unleash your
-              curiosity with our wide collection of books — from fiction to
-              self-help, academic to adventure. Whether you're a student, a
-              dreamer, or a lifelong learner, we've got something for everyone.
-              Explore curated collections. Fast & free delivery on all orders 💖
-            </p>
-            <p className="text-sm md:text-xl">
-              Subscribe with your email and get 10% off your first order!
-            </p>
-            <label className="input input-bordered flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                fill="currentColor"
-                className="w-4 h-4 opacity-70"
-              >
-                <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
-                <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
-              </svg>
-              <input type="text" className="grow" placeholder="Email" />
-            </label>
-            <button className="btn mt-6 btn-secondary">Get Started</button>
+    <div className="max-w-screen-2xl container mx-auto md:px-20 px-10 my-16">
+      {/* Hero Banner Section */}
+      <div className="flex flex-col md:flex-row items-center gap-10">
+        {/* Left Text */}
+        <div className="w-full md:w-1/2 space-y-6 order-2 md:order-1 mt-10">
+          <h1 className="text-3xl md:text-5xl font-extrabold leading-tight">
+            Welcome to{" "}
+            <span className="bg-gradient-to-r from-pink-500 to-purple-600 text-transparent bg-clip-text">
+              BookStore
+            </span>
+            <br />
+            Your Gateway to Endless Knowledge 📖
+          </h1>
+          <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+            Discover, Learn, and Grow with every page turned. From fiction to
+            self-help, academic to adventure, we’ve got something for everyone.
+            Fast & free delivery on all orders 💖
+          </p>
+          <p className="text-md text-gray-600 dark:text-gray-400">
+            Subscribe with your email and get{" "}
+            <span className="font-semibold text-pink-500">10% off</span> your
+            first order!
+          </p>
+
+          {/* Subscription Input */}
+          <div className="flex items-center gap-2 bg-white/30 dark:bg-slate-800/40 backdrop-blur-lg border border-gray-200 dark:border-gray-700 rounded-full px-4 py-2 shadow-md max-w-md">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex-grow bg-transparent outline-none text-gray-700 dark:text-gray-200 placeholder-gray-400"
+            />
+            <button className="px-5 py-2 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-all shadow-lg">
+              Get Started
+            </button>
           </div>
         </div>
-        <div className="order-1 w-full mt-10 md:w-1/2">
+
+        {/* Right Banner Image */}
+        <div className="w-full md:w-1/2 order-1 md:order-2">
           <img
             src="/Banner.jpg"
-            className="md:w-[550px] md:h-[460px] md:ml-12"
             alt="Banner"
+            className="w-full max-w-md mx-auto rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-500"
           />
         </div>
       </div>
 
-      {/* Section Title */}
-      <h2 className="text-2xl font-bold text-center mt-16 mb-8 text-gray-800 dark:text-white">
-        📚 Featured Sample Books
+      {/* Featured Books Section */}
+      <h2 className="text-3xl font-bold text-center mt-20 mb-10 text-gray-900 dark:text-white">
+        📚 Featured Free Books
       </h2>
 
-      {/* Featured Free Books Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
         {featuredBooks.map((book) => (
           <div
             key={book._id}
-            className="bg-white dark:bg-slate-800 p-6 rounded shadow"
+            className="bg-white/40 dark:bg-slate-800/40 backdrop-blur-lg p-6 rounded-2xl shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-300"
           >
             <img
               src={book.image}
               alt={book.title}
-              className="w-[187px] h-[197px] object-cover rounded mx-auto mb-4"
+              className="w-40 h-48 object-cover rounded-lg mx-auto mb-4 shadow-md"
             />
-            <h3 className="text-lg font-semibold text-center">{book.title}</h3>
-            <p className="text-center text-gray-600 dark:text-gray-300">
+            <h3 className="text-lg font-semibold text-center text-gray-900 dark:text-gray-100">
+              {book.title}
+            </h3>
+            <p className="text-center text-gray-600 dark:text-gray-400">
               {book.author}
             </p>
             <p className="text-center mt-2 font-bold text-pink-600">

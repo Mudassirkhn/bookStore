@@ -32,101 +32,109 @@ function ContactForm() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-center items-start gap-10 min-h-screen bg-gray-100 dark:bg-slate-900 dark:text-white pt-24 px-6 md:px-20">
+    <div className="flex flex-col md:flex-row justify-center items-start gap-12 min-h-screen bg-gray-100 dark:bg-slate-900 dark:text-white pt-28 px-6 md:px-20">
       {/* Left - Contact Form */}
       <form
         onSubmit={handleSubmit}
-        className="bg-white dark:bg-slate-800 dark:text-white p-8 rounded-lg shadow-md w-full max-w-md"
+        className="w-full max-w-md bg-white/40 dark:bg-slate-800/40 backdrop-blur-lg p-8 rounded-2xl shadow-lg border border-white/20"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Contact Us</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-pink-500">
+          Contact Us
+        </h2>
 
-        <div className="mb-4">
-          <label className="block mb-1 font-medium">Name</label>
+        {/* Name */}
+        <div className="relative mb-6">
           <input
             type="text"
             name="name"
-            placeholder="Enter your name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring focus:ring-pink-400 dark:bg-slate-700"
             required
+            className="peer w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-pink-400 dark:bg-slate-700"
           />
+          <label className="absolute left-3 top-3 text-gray-500 dark:text-gray-300 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-pink-500">
+            Name
+          </label>
         </div>
 
-        <div className="mb-4">
-          <label className="block mb-1 font-medium">Email</label>
+        {/* Email */}
+        <div className="relative mb-6">
           <input
             type="email"
             name="email"
-            placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring focus:ring-pink-400 dark:bg-slate-700"
             required
+            className="peer w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-pink-400 dark:bg-slate-700"
           />
+          <label className="absolute left-3 top-3 text-gray-500 dark:text-gray-300 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-pink-500">
+            Email
+          </label>
         </div>
 
-        <div className="mb-4">
-          <label className="block mb-1 font-medium">Message</label>
+        {/* Message */}
+        <div className="relative mb-6">
           <textarea
             name="message"
-            placeholder="Enter your message"
             rows="4"
             value={formData.message}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring focus:ring-pink-400 dark:bg-slate-700"
             required
+            className="peer w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-transparent focus:outline-none focus:ring-2 focus:ring-pink-400 dark:bg-slate-700"
           ></textarea>
+          <label className="absolute left-3 top-3 text-gray-500 dark:text-gray-300 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-pink-500">
+            Message
+          </label>
         </div>
 
         <button
           type="submit"
-          className="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600 transition duration-200"
+          className="w-full bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-lg font-semibold transition duration-200 shadow-md"
         >
-          Submit
+          Send Message
         </button>
       </form>
 
       {/* Right - Contact Info */}
-      <div className="bg-white dark:bg-slate-800 dark:text-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6">Address</h2>
-        <div className="mb-4 flex items-start gap-2">
-          <FaMapMarkerAlt className="text-pink-500 mt-1" />
-          <p>
-            <strong>Address:</strong> Lucknow, Uttar Pradesh, India (226003)
-          </p>
+      <div className="w-full max-w-md bg-white/40 dark:bg-slate-800/40 backdrop-blur-lg p-8 rounded-2xl shadow-lg border border-white/20">
+        <h2 className="text-3xl font-bold mb-6 text-pink-500">Get in Touch</h2>
+
+        <div className="mb-5 flex items-start gap-3">
+          <FaMapMarkerAlt className="text-pink-500 text-xl mt-1" />
+          <p>Lucknow, Uttar Pradesh, India (226003)</p>
         </div>
-        <div className="mb-4 flex items-center gap-2">
-          <FaPhone className="text-pink-500" />
-          <p>
-            <strong>Phone:</strong> +91-8960362827
-          </p>
+
+        <div className="mb-5 flex items-center gap-3">
+          <FaPhone className="text-pink-500 text-xl" />
+          <p>+91-8960362827</p>
         </div>
-        <div className="mb-4 flex items-center gap-2">
-          <FaEnvelope className="text-pink-500" />
-          <p>
-            <strong>Email:</strong> mmkhan213@gmail.com
-          </p>
+
+        <div className="mb-5 flex items-center gap-3">
+          <FaEnvelope className="text-pink-500 text-xl" />
+          <p>mmkhan213@gmail.com</p>
         </div>
 
         {/* Social Icons */}
         <div className="flex gap-4 mt-6">
-          <a href="https://twitter.com/" className="hover:text-pink-500" target="_blank">
-            <FaTwitter size={24} />
-          </a>
-          <a href="https://facebook.com/" className="hover:text-pink-500" target="_blank">
-            <FaFacebook size={24} />
-          </a>
-          <a href="https://instagram.com/" className="hover:text-pink-500" target="_blank">
-            <FaInstagram size={24} />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/mudassir-khan-0a91862b7/"
-            className="hover:text-pink-500"
-            target="_blank"
-          >
-            <FaLinkedin size={24} />
-          </a>
+          {[
+            { icon: <FaTwitter />, link: "https://twitter.com/" },
+            { icon: <FaFacebook />, link: "https://facebook.com/" },
+            { icon: <FaInstagram />, link: "https://instagram.com/" },
+            {
+              icon: <FaLinkedin />,
+              link: "https://www.linkedin.com/in/mudassir-khan-0a91862b7/",
+            },
+          ].map((item, idx) => (
+            <a
+              key={idx}
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 dark:bg-slate-700 hover:bg-pink-500 hover:text-white transition-all duration-300 shadow-md"
+            >
+              {item.icon}
+            </a>
+          ))}
         </div>
       </div>
     </div>
