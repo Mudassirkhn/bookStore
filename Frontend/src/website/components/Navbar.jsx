@@ -48,8 +48,8 @@ function Navbar() {
     <div
       className={`max-w-screen-2xl container mx-auto px-4 md:px-20 fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
         sticky
-          ? "shadow-md bg-base-200 dark:bg-slate-700"
-          : "bg-base-100 dark:bg-slate-800"
+          ? "shadow-md bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
+          : "bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm"
       }`}
     >
       <div className="navbar py-2">
@@ -72,7 +72,7 @@ function Navbar() {
                 />
               </svg>
             </div>
-            <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 dark:bg-slate-700 rounded-box w-52">
+            <ul className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-box w-52">
               {navItems}
             </ul>
           </div>
@@ -85,13 +85,13 @@ function Navbar() {
         </div>
 
         {/* Right - Search, Theme, Account */}
-        <div className="navbar-end space-x-3 items-center">
+        <div className="navbar-end flex items-center space-x-3">
           {/* Search */}
           <div className="hidden md:block">
-            <label className="px-3 py-2 border rounded-md flex items-center gap-2">
+            <label className="px-3 py-2 border rounded-md flex items-center gap-2 bg-white/30 dark:bg-slate-700/30 backdrop-blur-sm">
               <input
                 type="text"
-                className="grow outline-none rounded-md px-1 dark:bg-slate-900 dark:text-white"
+                className="grow outline-none rounded-md px-1 dark:bg-transparent dark:text-white"
                 placeholder="Search"
               />
               <svg
@@ -118,19 +118,11 @@ function Navbar() {
               checked={theme === "dark"}
             />
             {theme === "dark" ? (
-              <svg
-                className="w-6 h-6 text-yellow-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
+              <svg className="w-6 h-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 15a5 5 0 100-10 5 5 0 000 10z" />
               </svg>
             ) : (
-              <svg
-                className="w-6 h-6 text-gray-900"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
+              <svg className="w-6 h-6 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
                   d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.95 2.05a1 1 0 010 1.414L14.414 6a1 1 0 01-1.414-1.414l.535-.535a1 1 0 011.414 0zM17 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-2.05 4.95a1 1 0 00-1.414 0l-.535.535a1 1 0 101.414 1.414l.535-.535a1 1 0 000-1.414zM10 17a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.95-2.05a1 1 0 010 1.414l-.535.535a1 1 0 11-1.414-1.414l.535-.535a1 1 0 011.414 0zM3 10a1 1 0 011-1H5a1 1 0 110 2H4a1 1 0 01-1-1zm2.05-4.95a1 1 0 00-1.414 0l-.535.535A1 1 0 104.05 7.05l.535-.535a1 1 0 000-1.414z"
@@ -146,30 +138,38 @@ function Navbar() {
               <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-ghost btn-circle avatar"
+                className="btn btn-ghost btn-circle avatar transition-transform duration-300 hover:scale-105"
               >
-                <FaUserCircle className="text-2xl" />
+                {authUser.profileImage ? (
+                  <img
+                    src={`${import.meta.env.VITE_BACKEND_URL || "http://localhost:4001"}${authUser.profileImage}`}
+                    alt="avatar"
+                    className="w-10 h-10 rounded-full border border-white/30 dark:border-gray-600"
+                  />
+                ) : (
+                  <FaUserCircle className="text-2xl" />
+                )}
               </div>
               <ul
                 tabIndex={0}
-                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 dark:bg-slate-800 dark:text-white rounded-box w-52"
+                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-box w-52 transition-all duration-300"
               >
-                <li><Link to="/profile">🧑 My Profile</Link></li>
-                <li><Link to="/my-orders">📦 My Orders</Link></li>
-                <li><Link to="/address">📍 Manage Address</Link></li>
+                <li><Link to="/profile" className="hover:scale-105 transition-transform duration-200">🧑 My Profile</Link></li>
+                <li><Link to="/my-orders" className="hover:scale-105 transition-transform duration-200">📦 My Orders</Link></li>
+                <li><Link to="/address" className="hover:scale-105 transition-transform duration-200">📍 Manage Address</Link></li>
                 <li><Logout /></li>
               </ul>
             </div>
           ) : (
             <div>
-              <a
-                className="bg-black text-white px-3 py-2 rounded-md hover:bg-slate-800 duration-300 cursor-pointer"
+              <button
+                className="bg-black text-white px-3 py-2 rounded-md hover:bg-slate-800 hover:scale-105 transition-all duration-300"
                 onClick={() =>
                   document.getElementById("my_modal_3").showModal()
                 }
               >
                 Login
-              </a>
+              </button>
               <Login />
             </div>
           )}

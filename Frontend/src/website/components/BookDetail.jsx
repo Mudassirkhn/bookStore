@@ -50,28 +50,55 @@ export default function BookDetail() {
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900 dark:text-white min-h-screen px-4 py-10 mt-20">
-      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
-        {/* ✅ Fixed image size to 187x197 */}
-        <img
-          src={book.image}
-          alt={book.title}
-          className="w-[300px] h-[500px] object-cover rounded mx-auto"
-        />
-        <div>
-          <h1 className="text-3xl font-bold">{book.title}</h1>
-          <p className="text-gray-600 dark:text-gray-300 my-2">by {book.author}</p>
-          <p className="text-xl font-semibold text-pink-600">₹{book.price}</p>
-          <p className="mt-4">{book.description}</p>
-          <div className="mt-6 flex gap-4">
+    <div className="bg-gray-50 dark:bg-slate-900 dark:text-white min-h-screen px-4 py-16 mt-12">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-start bg-white/40 dark:bg-slate-800/40 backdrop-blur-lg p-8 rounded-2xl shadow-lg">
+        {/* Left: Book Image */}
+        <div className="flex justify-center">
+          <img
+            src={book.image}
+            alt={book.title}
+            className="w-[320px] h-[480px] object-cover rounded-xl shadow-2xl hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+
+        {/* Right: Book Details */}
+        <div className="space-y-6">
+          <h1 className="text-3xl md:text-4xl font-extrabold">{book.title}</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            by <span className="font-medium">{book.author}</span>
+          </p>
+
+          <p className="text-2xl font-bold text-pink-600">₹{book.price}</p>
+
+          {/* Extra Info */}
+          <div className="flex flex-wrap gap-4">
+            {book.category && (
+              <span className="bg-pink-100 text-pink-600 dark:bg-pink-600/30 dark:text-pink-300 px-3 py-1 rounded-full text-sm font-medium">
+                {book.category}
+              </span>
+            )}
+            {book.status && (
+              <span className="bg-green-100 text-green-600 dark:bg-green-600/30 dark:text-green-300 px-3 py-1 rounded-full text-sm font-medium">
+                {book.status}
+              </span>
+            )}
+          </div>
+
+          <p className="text-md leading-relaxed">{book.description}</p>
+
+          {/* Buttons */}
+          <div className="flex flex-wrap gap-4 pt-4">
             <button
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              className="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-all shadow-md"
               onClick={() => addToCart(book)}
             >
               Add to Cart
             </button>
+            <button className="bg-pink-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-600 transition-all shadow-md">
+              Buy Now
+            </button>
             <Link to="/course">
-              <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700">
+              <button className="bg-gray-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-600 transition-all shadow-md">
                 Back to Courses
               </button>
             </Link>
