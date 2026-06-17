@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 import toast from "react-hot-toast";
 
 const OrderList = () => {
@@ -7,7 +7,7 @@ const OrderList = () => {
 
   const fetchOrders = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4001/api/orders");
+      const { data } = await api.get("/api/orders");
       if (Array.isArray(data)) {
         setOrders(data);
       } else {
@@ -26,7 +26,7 @@ const OrderList = () => {
 
   const approveOrder = async (orderId) => {
     try {
-      await axios.put(`http://localhost:4001/api/orders/approve/${orderId}`);
+      await api.put(`/api/orders/approve/${orderId}`);
       toast.success("Order approved");
       fetchOrders();
     } catch (err) {
@@ -37,7 +37,7 @@ const OrderList = () => {
 
   const markDelivered = async (orderId) => {
     try {
-      await axios.put(`http://localhost:4001/api/orders/${orderId}/deliver`);
+      await api.put(`/api/orders/${orderId}/deliver`);
       toast.success("Marked as Delivered");
       fetchOrders();
     } catch (error) {
@@ -49,7 +49,7 @@ const OrderList = () => {
   const deleteOrder = async (orderId) => {
     if (window.confirm("Are you sure you want to delete this order?")) {
       try {
-        await axios.delete(`http://localhost:4001/api/orders/${orderId}`);
+        await api.delete(`/api/orders/${orderId}`);
         toast.success("Order deleted");
         fetchOrders();
       } catch (error) {

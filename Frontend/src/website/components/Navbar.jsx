@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthProvider";
 import { useCart } from "../context/CartContext";
 import Login from "./Login";
 import Logout from "./Logout";
+import { assetUrl } from "../../lib/api";
 
 function Navbar() {
   const [authUser] = useAuth();
@@ -142,7 +143,7 @@ function Navbar() {
               >
                 {authUser.profileImage ? (
                   <img
-                    src={`${import.meta.env.VITE_BACKEND_URL || "http://localhost:4001"}${authUser.profileImage}`}
+                    src={assetUrl(authUser.profileImage)}
                     alt="avatar"
                     className="w-10 h-10 rounded-full border border-white/30 dark:border-gray-600"
                   />

@@ -1,11 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Poppins:wght@500&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body{
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-    font-family: "Poppins", sans-serif;
+  body {
+    font-family: "Inter", sans-serif;
+    background: #f8fafc;
+    color: #111827;
+  }
+
+  .dark body {
+    background: #020617;
+    color: #f8fafc;
+  }
+}
+
+@layer components {
+  .book-panel {
+    @apply border border-slate-200/80 bg-white/85 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80;
+  }
+
+  .book-button {
+    @apply inline-flex items-center justify-center rounded-lg bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 dark:focus:ring-offset-slate-950;
+  }
+
+  .book-button-secondary {
+    @apply inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800;
+  }
 }

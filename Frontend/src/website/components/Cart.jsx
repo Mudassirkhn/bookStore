@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
@@ -15,7 +15,7 @@ function Cart() {
     const fetchCart = async () => {
       try {
         const userId = authUser?._id;
-        const res = await axios.get(`http://localhost:4001/api/cart/${userId}`);
+        const res = await api.get(`/api/cart/${userId}`);
         setCartItems(res.data?.items || []);
       } catch (err) {
         console.error("Failed to load cart:", err);
@@ -30,8 +30,8 @@ function Cart() {
   // ✅ Remove item
   const handleRemove = async (itemId) => {
     try {
-      await axios.delete(
-        `http://localhost:4001/api/cart/remove/${authUser._id}/${itemId}`
+      await api.delete(
+        `/api/cart/remove/${authUser._id}/${itemId}`
       );
       setCartItems((prev) => prev.filter((item) => item._id !== itemId));
     } catch (err) {

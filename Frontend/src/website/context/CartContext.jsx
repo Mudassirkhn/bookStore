@@ -1,6 +1,6 @@
 // CartContext.js
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 import { useAuth } from "./AuthProvider";
 
 const CartContext = createContext();
@@ -14,7 +14,7 @@ export const CartProvider = ({ children }) => {
     const fetchCart = async () => {
       try {
         if (authUser?._id) {
-          const res = await axios.get(`http://localhost:4001/api/cart/${authUser._id}`);
+          const res = await api.get(`/api/cart/${authUser._id}`);
           setCartItems(res.data?.items || []);
         }
       } catch (error) {
@@ -37,7 +37,7 @@ export const CartProvider = ({ children }) => {
 
     try {
       setCartItems((prev) => [...prev, item]); // Optimistic UI
-      await axios.post("http://localhost:4001/api/cart/add", {
+      await api.post("/api/cart/add", {
         userId: authUser._id,
         item,
       });
@@ -51,7 +51,7 @@ export const CartProvider = ({ children }) => {
     try {
       const userId = authUser._id;
 
-      await axios.delete(`http://localhost:4001/api/cart/remove/${userId}/${bookId}`);
+      await api.delete(`/api/cart/remove/${userId}/${bookId}`);
 
       setCartItems((prev) => prev.filter((item) => item.bookId !== bookId));
     } catch (error) {

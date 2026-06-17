@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthProvider";
-import axios from "axios";
+import api, { assetUrl } from "../../lib/api";
 
 export default function Profile() {
   const [authUser, setAuthUser] = useAuth();
   const [form, setForm] = useState({ name: "", email: "" });
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:4001";
 
   useEffect(() => {
     if (authUser) {
@@ -35,7 +34,7 @@ export default function Profile() {
         formData.append("profileImage", selectedFile);
       }
 
-      const { data } = await axios.put(`${BASE_URL}/user/profile`, formData, {
+      const { data } = await api.put(`/user/profile`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -104,7 +103,7 @@ export default function Profile() {
                   selectedFile
                     ? URL.createObjectURL(selectedFile)
                     : authUser?.profileImage
-                    ? `${BASE_URL}${authUser.profileImage}`
+                    ? assetUrl(authUser.profileImage)
                     : "https://cdn-icons-png.flaticon.com/512/149/149071.png"
                 }
                 alt="Profile"

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 import { useAuth } from "../context/AuthProvider";
 import { toast } from "react-hot-toast";
 
@@ -17,12 +17,11 @@ const ManageAddress = () => {
   });
   const [editingId, setEditingId] = useState(null);
 
-  const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:4001";
 
   const fetchAddresses = async () => {
     if (!authUser?._id) return;
     try {
-      const res = await axios.get(`${BASE_URL}/api/address/${authUser._id}`);
+      const res = await api.get(`/api/address/${authUser._id}`);
       const addressList = Array.isArray(res.data)
         ? res.data
         : res.data && typeof res.data === "object"
@@ -46,10 +45,10 @@ const ManageAddress = () => {
   const handleSubmit = async () => {
     try {
       if (editingId) {
-        await axios.put(`${BASE_URL}/api/address/${editingId}`, form);
+        await api.put(`/api/address/${editingId}`, form);
         toast.success("✅ Address updated");
       } else {
-        await axios.post(`${BASE_URL}/api/address`, {
+        await api.post(`/api/address`, {
           ...form,
           userId: authUser._id,
         });
@@ -81,7 +80,7 @@ const ManageAddress = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this address?")) return;
     try {
-      await axios.delete(`${BASE_URL}/api/address/${id}`);
+      await api.delete(`/api/address/${id}`);
       toast.success("✅ Address deleted");
       fetchAddresses();
     } catch (err) {

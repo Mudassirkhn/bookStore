@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useCart } from "../../website/context/CartContext";
 import { useAuth } from "../../website/context/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../lib/api";
 
 const Order = () => {
   const { cartItems, clearCart } = useCart();
@@ -14,7 +14,6 @@ const Order = () => {
   const [billingAddressId, setBillingAddressId] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Cash on Delivery");
 
-  const BASE_URL = "http://localhost:4001";
 
   const subtotal = cartItems.reduce((sum, item) => sum + Number(item.price * (item.quantity || 1)), 0);
   const gst = parseFloat((subtotal * 0.02).toFixed(2));
@@ -23,7 +22,7 @@ const Order = () => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/api/address/${authUser._id}`);
+        const res = await api.get(`/api/address/${authUser._id}`);
         const addresses = res.data || [];
         setSavedAddresses(addresses);
 
@@ -78,7 +77,7 @@ const Order = () => {
         paymentMethod,
       };
 
-      const res = await axios.post(`${BASE_URL}/api/orders/place`, orderData);
+      const res = await api.post(`/api/orders/place`, orderData);
       if (res.data.success) {
         alert("✅ Order placed successfully");
         clearCart();

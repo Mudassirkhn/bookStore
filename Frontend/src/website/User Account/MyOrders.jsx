@@ -1,6 +1,6 @@
 // src/website/pages/Order.jsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api, { assetUrl } from "../../lib/api";
 import { useAuth } from "../context/AuthProvider";
 
 const Order = () => {
@@ -11,7 +11,7 @@ const Order = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:4001/api/orders/user/${authUser._id}`);
+        const res = await api.get(`/api/orders/user/${authUser._id}`);
         setOrders(res.data);
       } catch (err) {
         console.error("Error fetching orders", err);
@@ -23,7 +23,7 @@ const Order = () => {
   const resolveImageSrc = (image) => {
     if (!image) return "/default-book.png";
     if (image.startsWith("data:image/")) return image;
-    return `http://localhost:4001/uploads/${image}`;
+    return assetUrl(image.startsWith("/uploads/") ? image : `/uploads/${image}`);
   };
 
   const totalAllOrders = orders.reduce((sum, order) => sum + (order.total || 0), 0);
@@ -62,7 +62,7 @@ const Order = () => {
       const confirm = window.confirm("Are you sure you want to cancel this order?");
       if (!confirm) return;
 
-      await axios.put(`http://localhost:4001/api/orders/cancel/${orderId}`);
+      await api.put(`/api/orders/cancel/${orderId}`);
       setOrders((prev) =>
         prev.map((o) => (o._id === orderId ? { ...o, status: "Cancelled" } : o))
       );

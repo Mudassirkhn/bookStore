@@ -1,7 +1,6 @@
-// src/website/pages/Course.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import api, { assetUrl } from "../../lib/api";
 import { useCart } from "../context/CartContext";
 
 function Course() {
@@ -11,39 +10,37 @@ function Course() {
   useEffect(() => {
     const getBooks = async () => {
       try {
-        const res = await axios.get("http://localhost:4001/book");
+        const res = await api.get("/book");
         const activeBooks = res.data.filter((book) => book.status === "Active");
         setBooks(activeBooks);
       } catch (error) {
         console.error("Error fetching books:", error);
       }
     };
+
     getBooks();
   }, []);
 
-  const handleBuy = (item) => {
-    addToCart(item);
-  };
-
   return (
-    <div className="bg-white dark:bg-slate-900 dark:text-white py-16 px-4 mt-1">
-      <div className="max-w-screen-2xl container mx-auto md:px-20 px-4">
-        {/* Heading */}
-        <div className="mt-28 text-center">
-          <h1 className="text-2xl md:text-4xl font-bold">
-            Explore our wide range of books and{" "}
-            <span className="text-pink-500">start your learning journey!</span>
-          </h1>
-          <p className="mt-3 text-gray-600 dark:text-gray-300 text-sm md:text-base">
-            Browse through categories, discover new authors, and find your next
-            favorite book.
+    <div className="min-h-screen bg-slate-50 px-4 py-16 dark:bg-slate-950 dark:text-white">
+      <div className="mx-auto max-w-screen-2xl px-0 md:px-10 lg:px-20">
+        <div className="mt-20 flex flex-col gap-4 border-b border-slate-200 pb-8 dark:border-slate-800 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-wide text-rose-600">
+              Catalog
+            </p>
+            <h1 className="mt-2 max-w-3xl text-3xl font-extrabold text-slate-950 dark:text-white md:text-5xl">
+              Explore books for every shelf.
+            </h1>
+          </div>
+          <p className="max-w-xl text-sm leading-7 text-slate-600 dark:text-slate-300">
+            Discover active books from your live catalog and add them straight to cart.
           </p>
         </div>
 
-        {/* Books Grid */}
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
           {books.map((item) => (
-            <Cards key={item._id} item={item} onBuy={() => handleBuy(item)} />
+            <BookCard key={item._id} item={item} onBuy={() => addToCart(item)} />
           ))}
         </div>
       </div>
@@ -51,46 +48,46 @@ function Course() {
   );
 }
 
-export default Course;
-
-// ✅ Redesigned Cards Component
-function Cards({ item, onBuy }) {
+function BookCard({ item, onBuy }) {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col">
-      <Link to={`/book/${item._id}`} className="relative group">
-        <img
-          src={item.image}
-          alt={item.title}
-          className="w-full h-[250px] object-cover transform group-hover:scale-105 transition duration-300"
-        />
-        <span className="absolute top-2 right-2 bg-pink-600 text-white text-xs px-2 py-1 rounded-lg shadow">
-          ₹{item.price}
-        </span>
-      </Link>
-
-      <div className="p-4 flex flex-col flex-grow text-center">
-        <h2 className="text-lg font-semibold line-clamp-1 dark:text-white">
-          {item.title}
-        </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-          {item.author}
-        </p>
-
-        <div className="mt-auto space-y-2">
-          <button
-            onClick={() => onBuy(item)}
-            className="w-full bg-pink-600 text-white py-2 rounded-xl hover:bg-pink-700 transition"
-          >
-            Add to Cart
-          </button>
-          <Link
-            to={`/checkout/${item._id}`}
-            className="block w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-2 rounded-xl hover:opacity-90 transition"
-          >
-            Buy Now
-          </Link>
+    <article className="book-panel flex overflow-hidden rounded-xl transition hover:-translate-y-1 hover:shadow-xl">
+      <Link to={`/book/${item._id}`} className="group flex w-full flex-col">
+        <div className="relative overflow-hidden bg-slate-100 dark:bg-slate-800">
+          <img
+            src={assetUrl(item.image)}
+            alt={item.title}
+            className="h-72 w-full object-cover transition duration-300 group-hover:scale-105"
+          />
+          <span className="absolute right-3 top-3 rounded-full bg-white px-3 py-1 text-xs font-bold text-rose-600 shadow dark:bg-slate-950">
+            Rs. {item.price}
+          </span>
         </div>
-      </div>
-    </div>
+
+        <div className="flex flex-1 flex-col p-4">
+          <h2 className="line-clamp-1 text-base font-bold text-slate-950 dark:text-white">
+            {item.title}
+          </h2>
+          <p className="mt-1 line-clamp-1 text-sm text-slate-500 dark:text-slate-400">
+            {item.author}
+          </p>
+
+          <div className="mt-4 grid gap-2">
+            <button
+              type="button"
+              onClick={(event) => {
+                event.preventDefault();
+                onBuy(item);
+              }}
+              className="book-button w-full"
+            >
+              Add to Cart
+            </button>
+            <span className="book-button-secondary w-full">View Details</span>
+          </div>
+        </div>
+      </Link>
+    </article>
   );
 }
+
+export default Course;

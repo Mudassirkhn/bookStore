@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import api from "../../lib/api";
 import toast from "react-hot-toast";
 
 function Login() {
@@ -20,7 +20,7 @@ function Login() {
     };
 
     try {
-      const res = await axios.post("http://localhost:4001/user/login", userInfo);
+      const res = await api.post("/user/login", userInfo);
       const user = res.data.user;
 
       if (user) {

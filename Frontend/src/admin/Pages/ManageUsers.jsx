@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 import toast from "react-hot-toast";
 
 export default function ManageUsers() {
@@ -14,7 +14,7 @@ export default function ManageUsers() {
 
   const fetchUsers = async () => {
     try {
-      const { data } = await axios.get("/api/users");
+      const { data } = await api.get("/api/users");
       if (Array.isArray(data)) {
         setUsers(data);
       } else if (Array.isArray(data.users)) {
@@ -35,7 +35,7 @@ export default function ManageUsers() {
   const addUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/users", formData);
+      await api.post("/api/users", formData);
       toast.success("User added");
       setFormData({
         name: "",
@@ -54,7 +54,7 @@ export default function ManageUsers() {
   const deleteUser = async (id) => {
     if (!window.confirm("Delete this user?")) return;
     try {
-      await axios.delete(`/api/users/${id}`);
+      await api.delete(`/api/users/${id}`);
       toast.success("User deleted");
       fetchUsers();
     } catch (error) {

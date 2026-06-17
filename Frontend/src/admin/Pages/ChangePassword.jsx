@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 import toast from "react-hot-toast";
 
 const ChangePassword = () => {
@@ -22,7 +22,7 @@ const ChangePassword = () => {
     }
 
     try {
-      const res = await axios.post("/api/admin/change-password", {
+      const res = await api.post("/api/admin/change-password", {
         oldPassword,
         newPassword,
       });

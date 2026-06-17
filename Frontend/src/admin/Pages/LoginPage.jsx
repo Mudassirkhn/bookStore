@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../lib/api";
 import { useAuth } from "../../website/context/AuthProvider";
 
 const LoginPage = () => {
@@ -12,7 +12,7 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:4001/api/admin/login", {
+      const res = await api.post("/api/admin/login", {
         email,
         password,
       });

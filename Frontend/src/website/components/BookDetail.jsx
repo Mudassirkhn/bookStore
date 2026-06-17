@@ -1,7 +1,7 @@
 // src/website/pages/BookDetail.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
+import api from "../../lib/api";
 import { useCart } from "../context/CartContext";
 
 export default function BookDetail() {
@@ -14,7 +14,7 @@ export default function BookDetail() {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await axios.get(`http://localhost:4001/book/${id}`);
+        const res = await api.get(`/book/${id}`);
         setBook(res.data);
       } catch (error) {
         console.error("Error fetching book details:", error);

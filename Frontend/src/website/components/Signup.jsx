@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import api from "../../lib/api";
 import { toast } from "react-hot-toast"; // ✅ Only toast, not Toaster
 
 function Signup() {
@@ -21,7 +21,7 @@ function Signup() {
     };
 
     try {
-      const res = await axios.post("http://localhost:4001/user/signup", userInfo);
+      const res = await api.post("/user/signup", userInfo);
       toast.success("Signup successful!");
 
       localStorage.setItem("authUser", JSON.stringify(res.data.user));

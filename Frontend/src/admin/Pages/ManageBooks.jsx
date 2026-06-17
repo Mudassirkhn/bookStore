@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../lib/api";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function ManageBooks() {
@@ -23,7 +23,7 @@ export default function ManageBooks() {
 
   const fetchBooks = async () => {
     try {
-      const res = await axios.get("http://localhost:4001/book");
+      const res = await api.get("/book");
       setBooks(res.data);
     } catch (err) {
       console.error("Error fetching books:", err);
@@ -52,7 +52,7 @@ export default function ManageBooks() {
     }
 
     try {
-      const res = await axios.post("http://localhost:4001/book", form);
+      const res = await api.post("/book", form);
       setBooks([...books, res.data]);
       resetForm();
     } catch (err) {
@@ -68,7 +68,7 @@ export default function ManageBooks() {
 
   const handleUpdate = async () => {
     try {
-      const res = await axios.put(`http://localhost:4001/book/${editId}`, form);
+      const res = await api.put(`/book/${editId}`, form);
       const updatedBook = res.data;
       setBooks(books.map((b) => (b._id === updatedBook._id ? updatedBook : b)));
       resetForm();
@@ -82,7 +82,7 @@ export default function ManageBooks() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this book?")) {
       try {
-        await axios.delete(`http://localhost:4001/book/${id}`);
+        await api.delete(`/book/${id}`);
         setBooks(books.filter((b) => b._id !== id));
       } catch (err) {
         console.error("Error deleting book:", err);
